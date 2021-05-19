@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Blh/.idea/Blh.iml" filepath="$PROJECT_DIR$/../Blh/.idea/Blh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ecommerceBack.iml" filepath="$PROJECT_DIR$/.idea/ecommerceBack.iml" />
+    </modules>
+  </component>
+</project>
