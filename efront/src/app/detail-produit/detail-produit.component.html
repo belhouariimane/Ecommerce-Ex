@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Détail </h1>
+<div mat-dialog-content>
+  <form name="formPanier" [formGroup]="formPanier">
+    <mat-form-field >
+      <mat-label>Nom produit</mat-label>
+      <input matInput value="{{produit.name}}" readonly>
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label>Categorie</mat-label>
+      <input matInput value="{{produit.categorie}}" readonly>
+    </mat-form-field>
+  <mat-form-field >
+    <mat-label>Prix</mat-label>
+    <input matInput value="{{variant.prixVente}}" readonly>
+  </mat-form-field>
+  <mat-form-field >
+    <mat-label>Couleur</mat-label>
+    <input matInput value="{{couleur.libelle}}" readonly>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Taille</mat-label>
+    <mat-select formControlName="taille" required>
+      <mat-option *ngFor="let taille of variant.tailles" value="{{taille}}">
+        {{taille}}
+      </mat-option>
+    </mat-select>
+    <mat-error>Veuillez sélectionner une taille ! </mat-error>
+  </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="doAction()">Ajouter au panier</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+</div>

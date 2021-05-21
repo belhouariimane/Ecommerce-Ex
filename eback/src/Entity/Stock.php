@@ -7,10 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass=StockRepository::class)
+ * @ORM\Table(name="stock" ,schema="public")
  * @ApiResource()
+ * @ApiFilter(SearchFilter::class, properties={"taille":"exact","variant":"exact"})
  */
 class Stock
 {
@@ -22,12 +25,7 @@ class Stock
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=variant::class, mappedBy="stock")
-     */
-    private $variant;
-
-    /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $taille;
 
@@ -35,6 +33,11 @@ class Stock
      * @ORM\Column(type="integer")
      */
     private $quantiteDisponible;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Variant::class, inversedBy="stocks")
+     */
+    private $variant;
 
     public function __construct()
     {
@@ -46,42 +49,13 @@ class Stock
         return $this->id;
     }
 
-    /**
-     * @return Collection|variant[]
-     */
-    public function getVariant(): Collection
-    {
-        return $this->variant;
-    }
 
-    public function addVariant(variant $variant): self
-    {
-        if (!$this->variant->contains($variant)) {
-            $this->variant[] = $variant;
-            $variant->setStock($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVariant(variant $variant): self
-    {
-        if ($this->variant->removeElement($variant)) {
-            // set the owning side to null (unless already changed)
-            if ($variant->getStock() === $this) {
-                $variant->setStock(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTaille(): ?int
+    public function getTaille(): ?string
     {
         return $this->taille;
     }
 
-    public function setTaille(int $taille): self
+    public function setTaille(string $taille): self
     {
         $this->taille = $taille;
 
@@ -96,6 +70,30 @@ class Stock
     public function setQuantiteDisponible(int $quantiteDisponible): self
     {
         $this->quantiteDisponible = $quantiteDisponible;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|variant[]
+     */
+    public function getVariant(): Collection
+    {
+        return $this->variant;
+    }
+
+    public function addVariant(variant $variant): self
+    {
+        if (!$this->variant->contains($variant)) {
+            $this->variant[] = $variant;
+        }
+
+        return $this;
+    }
+
+    public function removeVariant(variant $variant): self
+    {
+        $this->variant->removeElement($variant);
 
         return $this;
     }

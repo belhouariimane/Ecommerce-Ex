@@ -10,6 +10,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=PanierRepository::class)
+ * @ORM\Table(name="panier" ,schema="public")
  * @ApiResource()
  */
 class Panier
@@ -32,9 +33,19 @@ class Panier
     private $dateLivraison;
 
     /**
-     * @ORM\OneToMany(targetEntity=variant::class, mappedBy="panier")
+     * @ORM\OneToMany(targetEntity=Variant::class, mappedBy="panier")
      */
     private $variant;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantite;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $taille;
 
     public function __construct()
     {
@@ -51,9 +62,9 @@ class Panier
         return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    public function setDateCreation(): self
     {
-        $this->dateCreation = $dateCreation;
+        $this->dateCreation = new \DateTime();
 
         return $this;
     }
@@ -96,6 +107,30 @@ class Panier
                 $variant->setPanier(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): self
+    {
+        $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getTaille(): ?string
+    {
+        return $this->taille;
+    }
+
+    public function setTaille(string $taille): self
+    {
+        $this->taille = $taille;
 
         return $this;
     }

@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\VariantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=VariantRepository::class)
+ * @ORM\Table(name="variant",schema="public")
  * @ApiResource()
  */
 class Variant
@@ -35,19 +38,24 @@ class Variant
     private $produit;
 
     /**
-     * @ORM\ManyToOne(targetEntity=couleur::class)
+     * @ORM\ManyToOne(targetEntity=Couleur::class)
      */
     private $couleur;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Stock::class, inversedBy="variant")
-     */
-    private $stock;
 
     /**
      * @ORM\ManyToOne(targetEntity=Panier::class, inversedBy="variant")
      */
     private $panier;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Stock::class, mappedBy="variant")
+     */
+    private $stocks;
+
+    public function __construct()
+    {
+        $this->stocks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,18 +110,6 @@ class Variant
         return $this;
     }
 
-    public function getStock(): ?Stock
-    {
-        return $this->stock;
-    }
-
-    public function setStock(?Stock $stock): self
-    {
-        $this->stock = $stock;
-
-        return $this;
-    }
-
     public function getPanier(): ?Panier
     {
         return $this->panier;
@@ -122,6 +118,33 @@ class Variant
     public function setPanier(?Panier $panier): self
     {
         $this->panier = $panier;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Stock[]
+     */
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
+
+    public function addStock(Stock $stock): self
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks[] = $stock;
+            $stock->addVariant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): self
+    {
+        if ($this->stocks->removeElement($stock)) {
+            $stock->removeVariant($this);
+        }
 
         return $this;
     }

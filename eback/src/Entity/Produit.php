@@ -55,7 +55,7 @@ class Produit
     private $categorie;
 
     /**
-     * @ORM\OneToMany(targetEntity=variant::class, mappedBy="produit")
+     * @ORM\OneToMany(targetEntity=Variant::class, mappedBy="produit")
      */
     private $variants;
 
