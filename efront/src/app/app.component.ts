@@ -2,8 +2,8 @@ import {Component, ViewChild} from '@angular/core';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {ProduitService} from "./service/produit.service";
 import {MatDialog} from "@angular/material/dialog";
-import {DetailProduitComponent} from "./detail-produit/detail-produit.component";
-import {PanierComponent} from "./panier/panier.component";
+import {DetailProduitComponent} from "./component/detail-produit/detail-produit.component";
+import {PanierComponent} from "./component/panier/panier.component";
 
 @Component({
   selector: 'app-root',

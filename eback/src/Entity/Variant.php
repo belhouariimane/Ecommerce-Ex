@@ -7,11 +7,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=VariantRepository::class)
  * @ORM\Table(name="variant",schema="public")
- * @ApiResource()
+ *
+ * @ApiResource(
+ *   normalizationContext={"groups"={"variant:read"}, "enable_max_depth"=true}
+ * )
  */
 class Variant
 {
@@ -19,26 +23,31 @@ class Variant
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"variant:read","produit:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
     private $prixVente;
 
     /**
      * @ORM\Column(type="array")
+     * @Groups ({"variant:read","produit:read"})
      */
     private $tailles = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=Produit::class, inversedBy="variants")
+     * @Groups ({"variant:read","stock:read"})
      */
     private $produit;
 
     /**
      * @ORM\ManyToOne(targetEntity=Couleur::class)
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
     private $couleur;
 
@@ -49,6 +58,7 @@ class Variant
 
     /**
      * @ORM\ManyToMany(targetEntity=Stock::class, mappedBy="variant")
+     * @Groups ({"variant:read","produit:read"})
      */
     private $stocks;
 

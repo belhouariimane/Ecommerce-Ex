@@ -1,0 +1,48 @@
+<h1 mat-dialog-title> Détail :</h1>
+<div mat-dialog-content>
+  <form>
+    <mat-form-field >
+      <mat-label>Nom produit</mat-label>
+      <input matInput value="{{produit.name}}" readonly>
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label>Categorie</mat-label>
+      <input matInput value="{{produit.categorie}}" readonly>
+    </mat-form-field>
+  </form>
+  <h4> Détail variant </h4>
+
+  <div class="box-container">
+    <swiper class="swiper-container"  [config]="config" [disabled]="disabled" (indexChange)="onIndexChange($event)" (swiperTransitionStart)="onSwiperEvent('transitionStart')" (swiperTransitionEnd)="onSwiperEvent('transitionEnd')">
+      <div *ngFor="let variant of produit.variants" class="swiper-slide">
+        <form name="formPanier" [formGroup]="formPanier" style="margin: 12px">
+          <mat-form-field >
+            <mat-label>Prix</mat-label>
+            <input matInput value="{{variant.prixVente}}" readonly>
+          </mat-form-field>
+          <mat-form-field >
+            <mat-label>Couleur</mat-label>
+            <input matInput value="{{variant.couleur.libelle}}" readonly>
+          </mat-form-field>
+          <mat-form-field >
+            <mat-label>Veuillez saisir la quantité </mat-label>
+            <input matInput formControlName="qte" required>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Taille</mat-label>
+            <mat-select formControlName="taille" required>
+              <mat-option *ngFor="let taille of variant.tailles" value="{{taille}}">
+                {{taille}}
+              </mat-option>
+            </mat-select>
+            <mat-error>Veuillez sélectionner une taille ! </mat-error>
+          </mat-form-field>
+          <button mat-button (click)="doAction(variant,produit)">Ajouter au panier</button>
+        </form>
+      </div>
+    </swiper>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+</div>

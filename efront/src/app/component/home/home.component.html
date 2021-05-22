@@ -1,0 +1,9 @@
+<app-menu></app-menu>
+
+<h1> liste des produits</h1>
+<app-liste-produit (change) = "updatePanier($event)" > </app-liste-produit>
+
+<div *ngIf ="newPanier.length!==0" >
+  <h1> Voici votre panier </h1>
+  <button (click)="openDialog(newPanier)">afficher mon panier</button>
+</div>

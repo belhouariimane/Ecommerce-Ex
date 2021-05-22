@@ -1,5 +1,5 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {ProduitService} from "../service/produit.service";
+import {ProduitService} from "../../service/produit.service";
 import {DetailProduitComponent} from "../detail-produit/detail-produit.component";
 import {MatDialog} from "@angular/material/dialog";
 
@@ -23,9 +23,10 @@ export class ListeProduitComponent implements OnInit {
   changePanier(){
     this.panierChange.emit(this.prePanier);
   }
+  //show detail produit : show variants / add variant to card shop(panier)
   openDialog(obj:any) {
     const dialogRef = this.dialog.open(DetailProduitComponent, {
-      width: '350px',
+      width: '450px',
       data:obj
     });
 
@@ -33,6 +34,7 @@ export class ListeProduitComponent implements OnInit {
       if(result.data){
         this.prePanier.push(result.data);
       }
+      // set panier
      this.changePanier();
     });
   }

@@ -21,4 +21,14 @@ export class StockService {
         return data;
       }));
   }
+  getStock(): Observable<Stock []>{
+    return this.http.get<Stock []>(`${environment.apiUrl}/stocks`)
+      .pipe(map((data: Stock[]) =>{
+        // @ts-ignore
+        return data['hydra:member'].map( (s: Stock) => {
+          if (s){
+            return new Stock(s);
+          }});
+      }));
+  }
 }

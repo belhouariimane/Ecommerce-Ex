@@ -8,11 +8,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProduitRepository::class)
  * @ORM\Table(name="produit" ,schema="public")
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"produit:read"}, "enable_max_depth"=true}
+ *     )
  */
 class Produit
 {
@@ -25,37 +28,44 @@ class Produit
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups ({"variant:read","produit:read"})
      */
     private $reference;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
     private $marque;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
     private $genre;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
 
     private $categorie;
 
     /**
      * @ORM\OneToMany(targetEntity=Variant::class, mappedBy="produit")
+     * @Groups ({"produit:read"})
      */
     private $variants;
 

@@ -47,15 +47,17 @@ class panierController extends AbstractController
             $variant= $this->em->getRepository(Variant::class)->findOneBy(['id' => $value['variant']['id']]);
             $panier->addVariant($variant);
             $panier->setTaille($value['stock']['taille']);
-            $panier->setQuantite(1);
+            $panier->setQuantite($value['qte']);
             $stock = $this->em->getRepository(Stock::class)->findOneBy(['id' => $value['stock']['id']]);
-            $stock->setQuantiteDisponible($stock->getQuantiteDisponible() - 1);
+            $stock->setQuantiteDisponible($stock->getQuantiteDisponible() - $value['qte']);
             $this->em->persist($stock);
             $this->em->persist($panier);
         }
 
         $this->em->flush();
-        return  new Response('produits ajoutés ') ;
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_CREATED);
+        return  $response ;
     }
 }
 

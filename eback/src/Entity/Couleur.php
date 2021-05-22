@@ -7,10 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CouleurRepository::class)
- *  @ORM\Table(name="couleur" ,schema="public")
+ * @ORM\Table(name="couleur" ,schema="public")
  * @ApiResource()
  */
 class Couleur
@@ -19,16 +20,19 @@ class Couleur
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"variant:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups ({"variant:read","produit:read"})
      */
     private $code;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups ({"variant:read","produit:read","stock:read"})
      */
     private $libelle;
 
